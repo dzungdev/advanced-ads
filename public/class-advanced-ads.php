@@ -672,6 +672,8 @@ class Advanced_Ads {
      * @param str $content post content
      */
     public function inject_content($content = ''){
+
+
         // run only on single pages of public post types
         $public_post_types = get_post_types(array('public' => true, 'publicly_queryable' => true), 'names', 'or');
 
@@ -689,6 +691,9 @@ class Advanced_Ads {
             }
             if(isset($_placement['type']) && $_placement['type'] == 'post_content'){
                 $content = Advads_Ad_Placements::inject_in_content($_placement_id, $_placement['options'], $content);
+            }
+            if(isset($_placement['type']) && $_placement['type'] == 'before_last_img_post_content'){
+                $content = Advads_Ad_Placements::inject_to_image_in_content($_placement_id, $_placement['options'], $content);
             }
         }
 
