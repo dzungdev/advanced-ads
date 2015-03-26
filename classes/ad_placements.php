@@ -51,6 +51,10 @@ class Advads_Ad_Placements {
                 'title' => __('post content', ADVADS_SLUG),
                 'description' => __('Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG),
                 ),
+            'before_last_img_post_content' => array(
+                'title' => __('before last image in post content', ADVADS_SLUG),
+                'description' => __('Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG),
+                ),
         );
         return apply_filters('advanced-ads-placement-types', $types);
     }
