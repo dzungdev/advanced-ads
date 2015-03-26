@@ -281,4 +281,40 @@ class Advads_Ad_Placements {
         return implode('', $paragraphs);
     }
 
+    /**
+     * Dzungdev
+     * inject ads directly into before last image in content
+     *
+     * @param string $placement_id id of the placement
+     * @param arr $options placement options
+     * @param string $content
+     * @return type
+     */
+    static function inject_to_image_in_content($placement_id, $options, $content) {
+        $ad_content = Advads_Ad_Placements::output($placement_id);
+        $captionPos = strpos($content, "[caption");
+        if ($captionPos === false) { //only image
+            preg_match_all('/<img[^>]+>/i',$content, $result);
+            $imgArr = $result[0]; 
+            $img =  $result[0][count($imgArr) -1 ];
+            $addContentAndImg = $ad_content . $img;
+            $content  = str_replace($img, $addContentAndImg, $content);            
+        } else {//caption exists need to check last image has caption or not
+            preg_match_all("/\[caption.*?].*?(<img.*?\/?>).*?\[\/caption]/s",$content, $captionResult);
+            preg_match_all('/<img[^>]+>/i',$content, $imgResult);
+            $caption = $captionResult[0][count($captionResult[0]) - 1];
+            $img =  $imgResult[0][count($imgResult[0]) -1 ];
+            $lastCaptionPos = strpos($caption, $img);
+            if ($lastCaptionPos === false) {//last img doesn't have caption
+                $addContentAndImg = $ad_content . $img;
+                $content  = str_replace($img, $addContentAndImg, $content);            
+            } else {
+                $addContentAndCaption = $ad_content . $caption;
+                $content  = str_replace($caption, $addContentAndCaption, $content);
+            }
+        }
+        return $content;
+    }
+
+
 }
